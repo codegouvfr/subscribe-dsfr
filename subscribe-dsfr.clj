@@ -53,7 +53,7 @@
 ;;
 ;; ~$ subscribe -h # Show more information
 
-(def version "0.5.1")
+(def version "0.5.3")
 
 (require '[org.httpkit.server :as server]
          '[babashka.http-client :as http]
@@ -221,8 +221,11 @@
         query-string (when (seq query-params)
                        (str/join "&"
                                  (map (fn [[k v]]
-                                        (str (name k) "="
-                                             (java.net.URLEncoder/encode (str v) "UTF-8")))
+                                        ;; Special handling for token to avoid double-encoding
+                                        (if (= k :token)
+                                          (str (name k) "=" v)
+                                          (str (name k) "="
+                                               (java.net.URLEncoder/encode (str v) "UTF-8"))))
                                       query-params)))]
     (if (seq query-string)
       (str url "?" query-string)
@@ -472,23 +475,30 @@
     (log/info "Generated confirmation token for" email ":" token)
     token))
 
-;; Get the confirmation details for a token
 (defn get-confirmation-details [token]
   (log/debug "Looking up token in pending-subscriptions:" token)
-  (log/debug "Available tokens:" (keys @pending-subscriptions))
   (let [details (get @pending-subscriptions token)
         now     (System/currentTimeMillis)]
     (if details
+      ;; Process the token
       (do
         (log/debug "Found token details:" details)
         (if (< now (:expires-at details))
           (do
             (log/debug "Token is valid (not expired)")
             details)
-          (do
-            (log/debug "Token is expired")
-            nil)))
-      (log/debug "Token not found in pending-subscriptions"))))
+          (log/debug "Token is expired")))
+      ;; Try URL-decoded version if original token was not found
+      (try
+        (let [decoded-token (java.net.URLDecoder/decode token "UTF-8")
+              alt-details   (get @pending-subscriptions decoded-token)]
+          (when alt-details
+            (log/debug "Found token after URL decoding:" decoded-token)
+            (when (< now (:expires-at alt-details))
+              (log/debug "Decoded token is valid (not expired)")
+              alt-details)))
+        (catch Exception e
+          (log/debug "Error trying to URL-decode token:" (.getMessage e)))))))
 
 (defn cleanup-expired-tokens []
   (let [now (System/currentTimeMillis)]
