@@ -53,7 +53,7 @@
 ;;
 ;; ~$ subscribe -h # Show more information
 
-(ns cdg.subscribe-dsfr
+(ns codegouvfr.subscribe-dsfr
   (:require [org.httpkit.server :as server]
             [babashka.http-client :as http]
             [clojure.string :as str]
