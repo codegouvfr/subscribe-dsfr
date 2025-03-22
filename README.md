@@ -5,7 +5,7 @@
 
 Assuming [bbin](https://github.com/babashka/bbin) is installed:
 
-    bbin install https://raw.githubusercontent.com/codegouvfr/subscribe-dsfr/refs/heads/main/subscribe-dsfr.clj
+    bbin install io.github.codegouvfr/subscribe-dsfr
 
 Then run:
 
