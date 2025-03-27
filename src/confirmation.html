@@ -1,0 +1,16 @@
+<div id="result" {% if show-back-link %}class="fr-container"{% endif %}>
+  <div class="fr-alert fr-alert--{{message-type}}">
+    <h3 class="fr-alert__title">{{heading}}</h3>
+    <p>{{message|safe-str}}</p>
+    {% if debug-info %}
+    <div class="debug">
+      {{debug-info}}
+    </div>
+    {% endif %}
+  </div>
+  {% if show-back-link %}
+  <div class="fr-mt-4w">
+    <a href="{{base-path}}" class="fr-btn fr-btn--secondary">{{back}}</a>
+  </div>
+  {% endif %}
+</div>
