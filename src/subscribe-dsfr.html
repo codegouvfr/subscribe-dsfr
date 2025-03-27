@@ -10,70 +10,15 @@
     <link rel="shortcut icon" href="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr@1.12.1/dist/favicon/favicon.ico" type="image/x-icon">
     <script src="https://unpkg.com/htmx.org@2.0.0"></script>
     <style>
-.success {
-    border-left: 5px solid var(--success-425-625);
-    padding: 1rem;
-    margin-bottom: 1rem;
-    background-color: var(--success-950-100);
-}
-
-.error {
-    border-left: 5px solid var(--error-425-625);
-    padding: 1rem;
-    margin-bottom: 1rem;
-    background-color: var(--error-950-100);
-}
-
-.warning {
-    border-left: 5px solid var(--warning-425-625);
-    padding: 1rem;
-    margin-bottom: 1rem;
-    background-color: var(--warning-950-100);
-}
-
-.info {
-    border-left: 5px solid var(--info-425-625);
-    padding: 1rem;
-    margin-bottom: 1rem;
-    background-color: var(--info-950-100);
-}
-
-.debug {
-    margin-top: 1rem;
-    padding: 1rem;
-    background-color: var(--grey-950-100);
-    border-radius: 0.25rem;
-    font-family: monospace;
-    white-space: pre-wrap;
-    display: none;
-    font-size: 0.85rem;
-}
-
-.htmx-indicator {
-    opacity: 0;
-    transition: opacity 200ms ease-in;
-}
-
-.htmx-request .htmx-indicator {
-    opacity: 1;
-}
-
-.htmx-request.htmx-indicator {
-    opacity: 1;
-}
-
-/* Honeypot field - hidden from users but visible to bots */
-.visually-hidden {
-    position: absolute;
-    left: -9999px;
-    height: 1px;
-    width: 1px;
-    overflow: hidden;
-}
-
-.fr-subscribe-form {
-    padding: 2rem 0;
-}
+     .success {border-left: 5px solid var(--success-425-625); padding: 1rem; margin-bottom: 1rem; background-color: var(--success-950-100);}
+     .error {border-left: 5px solid var(--error-425-625); padding: 1rem; margin-bottom: 1rem; background-color: var(--error-950-100);}
+     .warning {border-left: 5px solid var(--warning-425-625); padding: 1rem; margin-bottom: 1rem; background-color: var(--warning-950-100);}
+     .info {border-left: 5px solid var(--info-425-625); padding: 1rem; margin-bottom: 1rem; background-color: var(--info-950-100);}
+     .debug {margin-top: 1rem; padding: 1rem; background-color: var(--grey-950-100); border-radius: 0.25rem; font-family: monospace; white-space: pre-wrap; display: none; font-size: 0.85rem;}
+     .htmx-indicator {opacity: 0; transition: opacity 200ms ease-in;}
+     .htmx-request .htmx-indicator {opacity: 1;}
+     .visually-hidden {position: absolute; left: -9999px; height: 1px; width: 1px; overflow: hidden;}
+     .fr-subscribe-form {padding: 2rem 0;}
     </style>
   </head>
   <body>
@@ -106,6 +51,7 @@
       <div class="fr-container fr-my-6w">
 	<div class="fr-grid-row fr-grid-row--gutters">
           <div class="fr-col-12 fr-col-md-8 fr-col-offset-md-2">
+            {% if not hide-form %}
             <article class="fr-subscribe-form">
               <div class="fr-card fr-card--grey">
 		<div class="fr-card__body">
@@ -137,8 +83,26 @@
 		</div>
               </div>
             </article>
+            {% endif %}
 
-            <div id="result"></div>
+            <div id="result">
+              {% if show-message %}
+              <div class="fr-alert fr-alert--{{message-type}}">
+                <h3 class="fr-alert__title">{{heading}}</h3>
+                <p>{{message|safe-str}}</p>
+                {% if debug-info %}
+                <div class="debug">
+                  {{debug-info}}
+                </div>
+                {% endif %}
+              </div>
+              {% if show-back-link %}
+              <div class="fr-mt-4w">
+                <a href="{{base-path}}" class="fr-btn fr-btn--secondary">{{back}}</a>
+              </div>
+              {% endif %}
+              {% endif %}
+            </div>
           </div>
 	</div>
       </div>
