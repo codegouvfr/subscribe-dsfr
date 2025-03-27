@@ -5,7 +5,7 @@
 
 [code.gouv.fr/infolettre](https://code.gouv.fr/infolettre/) uses [subscribe](https://github.com/bzg/subscribe) to let users subscribe to the BlueHats newsletter.
 
-This repository contains the HTML template files needed to use the DSFR with `subscribe`.
+The [src/ directory](src/) of this repository contains HTML templates files to deploy the `subscribe` web app using the [French design system](https://github.com/GouvernementFR/dsfr/) (aka DSFR).
 
 # Contributing
 
