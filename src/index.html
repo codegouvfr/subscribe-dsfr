@@ -10,70 +10,61 @@
     <link rel="shortcut icon" href="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr@1.12.1/dist/favicon/favicon.ico" type="image/x-icon">
     <script src="https://unpkg.com/htmx.org@2.0.0"></script>
     <style>
-.success {
-    border-left: 5px solid var(--success-425-625);
-    padding: 1rem;
-    margin-bottom: 1rem;
-    background-color: var(--success-950-100);
-}
-
-.error {
-    border-left: 5px solid var(--error-425-625);
-    padding: 1rem;
-    margin-bottom: 1rem;
-    background-color: var(--error-950-100);
-}
-
-.warning {
-    border-left: 5px solid var(--warning-425-625);
-    padding: 1rem;
-    margin-bottom: 1rem;
-    background-color: var(--warning-950-100);
-}
-
-.info {
-    border-left: 5px solid var(--info-425-625);
-    padding: 1rem;
-    margin-bottom: 1rem;
-    background-color: var(--info-950-100);
-}
-
-.debug {
-    margin-top: 1rem;
-    padding: 1rem;
-    background-color: var(--grey-950-100);
-    border-radius: 0.25rem;
-    font-family: monospace;
-    white-space: pre-wrap;
-    display: none;
-    font-size: 0.85rem;
-}
-
-.htmx-indicator {
-    opacity: 0;
-    transition: opacity 200ms ease-in;
-}
-
-.htmx-request .htmx-indicator {
-    opacity: 1;
-}
-
-.htmx-request.htmx-indicator {
-    opacity: 1;
-}
-
-/* Honeypot field - hidden from users but visible to bots */
-.visually-hidden {
-    position: absolute;
-    left: -9999px;
-    height: 1px;
-    width: 1px;
-    overflow: hidden;
-}
-
-.fr-subscribe-form {
-    padding: 2rem 0;
-}
+     .success {
+	 border-left: 5px solid var(--success-425-625);
+	 padding: 1rem;
+	 margin-bottom: 1rem;
+	 background-color: var(--success-950-100);
+     }
+     .error {
+	 border-left: 5px solid var(--error-425-625);
+	 padding: 1rem;
+	 margin-bottom: 1rem;
+	 background-color: var(--error-950-100);
+     }
+     .warning {
+	 border-left: 5px solid var(--warning-425-625);
+	 padding: 1rem;
+	 margin-bottom: 1rem;
+	 background-color: var(--warning-950-100);
+     }
+     .info {
+	 border-left: 5px solid var(--info-425-625);
+	 padding: 1rem;
+	 margin-bottom: 1rem;
+	 background-color: var(--info-950-100);
+     }
+     .debug {
+	 margin-top: 1rem;
+	 padding: 1rem;
+	 background-color: var(--grey-950-100);
+	 border-radius: 0.25rem;
+	 font-family: monospace;
+	 white-space: pre-wrap;
+	 display: none;
+	 font-size: 0.85rem;
+     }
+     .htmx-indicator {
+	 opacity: 0;
+	 transition: opacity 200ms ease-in;
+     }
+     .htmx-request .htmx-indicator {
+	 opacity: 1;
+     }
+     .htmx-request.htmx-indicator {
+	 opacity: 1;
+     }
+     /* Honeypot field - hidden from users but visible to bots */
+     .visually-hidden {
+	 position: absolute;
+	 left: -9999px;
+	 height: 1px;
+	 width: 1px;
+	 overflow: hidden;
+     }
+     .fr-subscribe-form {
+	 padding: 2rem 0;
+     }
     </style>
   </head>
   <body>
@@ -189,7 +180,6 @@
 	</div>
       </div>
     </footer>
-
     <!-- DSFR JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr@1.12.1/dist/dsfr/dsfr.module.min.js" type="module"></script>
     <script src="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr@1.12.1/dist/dsfr/dsfr.nomodule.min.js" nomodule></script>
