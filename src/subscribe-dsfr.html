@@ -8,137 +8,99 @@
     <link rel="apple-touch-icon" href="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr@1.12.1/dist/favicon/apple-touch-icon.png">
     <link rel="icon" href="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr@1.12.1/dist/favicon/favicon.svg" type="image/svg+xml">
     <link rel="shortcut icon" href="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr@1.12.1/dist/favicon/favicon.ico" type="image/x-icon">
-    <script src="https://unpkg.com/htmx.org@2.0.0"></script>
     <style>
-     .success {
-	 border-left: 5px solid var(--success-425-625);
-	 padding: 1rem;
-	 margin-bottom: 1rem;
-	 background-color: var(--success-950-100);
-     }
-     .error {
-	 border-left: 5px solid var(--error-425-625);
-	 padding: 1rem;
-	 margin-bottom: 1rem;
-	 background-color: var(--error-950-100);
-     }
-     .warning {
-	 border-left: 5px solid var(--warning-425-625);
-	 padding: 1rem;
-	 margin-bottom: 1rem;
-	 background-color: var(--warning-950-100);
-     }
-     .info {
-	 border-left: 5px solid var(--info-425-625);
-	 padding: 1rem;
-	 margin-bottom: 1rem;
-	 background-color: var(--info-950-100);
-     }
-     .debug {
-	 margin-top: 1rem;
-	 padding: 1rem;
-	 background-color: var(--grey-950-100);
-	 border-radius: 0.25rem;
-	 font-family: monospace;
-	 white-space: pre-wrap;
-	 display: none;
-	 font-size: 0.85rem;
-     }
-     .htmx-indicator {
-	 opacity: 0;
-	 transition: opacity 200ms ease-in;
-     }
-     .htmx-request .htmx-indicator {
-	 opacity: 1;
-     }
-     .htmx-request.htmx-indicator {
-	 opacity: 1;
-     }
-     /* Honeypot field - hidden from users but visible to bots */
-     .visually-hidden {
-	 position: absolute;
-	 left: -9999px;
-	 height: 1px;
-	 width: 1px;
-	 overflow: hidden;
-     }
-     .fr-subscribe-form {
-	 padding: 2rem 0;
-     }
+     .success {border-left: 5px solid var(--success-425-625); padding: 1rem; margin-bottom: 1rem; background-color: var(--success-950-100);}
+     .error {border-left: 5px solid var(--error-425-625); padding: 1rem; margin-bottom: 1rem; background-color: var(--error-950-100);}
+     .warning {border-left: 5px solid var(--warning-425-625); padding: 1rem; margin-bottom: 1rem; background-color: var(--warning-950-100);}
+     .info {border-left: 5px solid var(--info-425-625); padding: 1rem; margin-bottom: 1rem; background-color: var(--info-950-100);}
+     .visually-hidden {position: absolute; left: -9999px; height: 1px; width: 1px; overflow: hidden;}
+     .fr-subscribe-form {padding: 2rem 0;}
     </style>
   </head>
   <body>
     <header role="banner" class="fr-header">
       <div class="fr-header__body">
-	<div class="fr-container">
+        <div class="fr-container">
           <div class="fr-header__body-row">
             <div class="fr-header__brand fr-enlarge-link">
               <div class="fr-header__brand-top">
-		<div class="fr-header__logo">
+                <div class="fr-header__logo">
                   <p class="fr-logo">
                     République<br>
                     Française
                   </p>
-		</div>
-		<div class="fr-header__operator">
+                </div>
+                <div class="fr-header__operator">
                   <img src="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr@1.12.1/dist/artwork/pictograms/digital/mail.svg" class="fr-responsive-img" style="width:3rem;" alt="">
-		</div>
+                </div>
               </div>
               <div class="fr-header__service">
-		<p class="fr-header__service-title">{{page.title}}{% if list-name|not-empty %} - {{list-name}}{% endif %}</p>
+                <p class="fr-header__service-title">{{page.title}}{% if list-name|not-empty %} - {{list-name}}{% endif %}</p>
               </div>
             </div>
           </div>
-	</div>
+        </div>
       </div>
     </header>
 
     <main role="main" id="content">
       <div class="fr-container fr-my-6w">
-	<div class="fr-grid-row fr-grid-row--gutters">
+        <div class="fr-grid-row fr-grid-row--gutters">
           <div class="fr-col-12 fr-col-md-8 fr-col-offset-md-2">
+
+            <!-- Message block (shown when there's a message to display) -->
+            {% if message %}
+            <div id="result">
+              <div class="fr-alert fr-alert--{{message-type}}">
+                <h3 class="fr-alert__title">{{heading}}</h3>
+                <p>{{message|safe}}</p>
+              </div>
+              <div class="fr-mt-4w">
+                <a href="{{base-path}}" class="fr-btn fr-btn--secondary">{{messages.back-to-subscription}}</a>
+              </div>
+            </div>
+            {% endif %}
+
+            <!-- Subscription form (shown when there's no message) -->
+            {% if show-form %}
             <article class="fr-subscribe-form">
               <div class="fr-card fr-card--grey">
-		<div class="fr-card__body">
+                <div class="fr-card__body">
                   <div class="fr-card__content">
                     <h2>{% firstof list-name page.heading %}</h2>
                     <p>{{page.subheading}}</p>
 
-                    <form hx-post="{{subscribe_path}}" hx-target="#result" hx-swap="outerHTML" hx-indicator="#loading" class="fr-form">
+                    <form action="{{subscribe_path}}" method="post" class="fr-form">
                       <div class="fr-input-group">
-			<label class="fr-label" for="email">E-mail</label>
-			<input class="fr-input" type="email" id="email" name="email" placeholder="{{form.email-placeholder}}" required>
+                        <label class="fr-label" for="email">E-mail</label>
+                        <input class="fr-input" type="email" id="email" name="email" placeholder="{{form.email-placeholder}}" required>
                       </div>
 
                       <input type="hidden" name="csrf_token" value="{{csrf_token}}">
                       <div class="visually-hidden">
-			<label for="website">{{form.website-label}}</label>
-			<input type="text" id="website" name="website" autocomplete="off">
+                        <label for="website">{{form.website-label}}</label>
+                        <input type="text" id="website" name="website" autocomplete="off">
                       </div>
 
                       <div class="fr-btns-group fr-btns-group--inline fr-mt-3w">
-			<button type="submit" name="action" value="subscribe" class="fr-btn">{{form.subscribe-button}}</button>
-			<button type="submit" name="action" value="unsubscribe" class="fr-btn fr-btn--secondary">{{form.unsubscribe-button}}</button>
-                      </div>
-                      <div class="fr-mt-2w">
-			<progress id="loading" class="fr-progress htmx-indicator"></progress>
+                        <button type="submit" name="action" value="subscribe" class="fr-btn">{{form.subscribe-button}}</button>
+                        <button type="submit" name="action" value="unsubscribe" class="fr-btn fr-btn--secondary">{{form.unsubscribe-button}}</button>
                       </div>
                     </form>
                   </div>
-		</div>
+                </div>
               </div>
             </article>
-
-            <div id="result"></div>
+            {% endif %}
           </div>
-	</div>
+        </div>
       </div>
     </main>
 
     <!-- Footer -->
     <footer class="fr-footer" role="contentinfo">
       <div class="fr-container">
-	<div class="fr-footer__body">
+        <div class="fr-footer__body">
           <div class="fr-footer__brand fr-enlarge-link">
             <p class="fr-logo">
               République<br>
@@ -146,26 +108,24 @@
             </p>
           </div>
           <div class="fr-footer__content">
-            <p class="fr-footer__content-desc">
-              Inscription à la gazette BlueHats 🧢
-            </p>
+            <p class="fr-footer__content-desc">{{page.footer|safe}}</p>
             <ul class="fr-footer__content-list">
               <li class="fr-footer__content-item">
-		<a class="fr-footer__content-link" target="new" href="https://info.gouv.fr">info.gouv.fr</a>
+                <a class="fr-footer__content-link" target="new" href="https://info.gouv.fr">info.gouv.fr</a>
               </li>
               <li class="fr-footer__content-item">
-		<a class="fr-footer__content-link" target="new" href="https://service-public.fr">service-public.fr</a>
+                <a class="fr-footer__content-link" target="new" href="https://service-public.fr">service-public.fr</a>
               </li>
               <li class="fr-footer__content-item">
-		<a class="fr-footer__content-link" target="new" href="https://legifrance.gouv.fr">legifrance.gouv.fr</a>
+                <a class="fr-footer__content-link" target="new" href="https://legifrance.gouv.fr">legifrance.gouv.fr</a>
               </li>
               <li class="fr-footer__content-item">
-		<a class="fr-footer__content-link" target="new" href="https://data.gouv.fr">data.gouv.fr</a>
+                <a class="fr-footer__content-link" target="new" href="https://data.gouv.fr">data.gouv.fr</a>
               </li>
             </ul>
           </div>
-	</div>
-	<div class="fr-footer__bottom">
+        </div>
+        <div class="fr-footer__bottom">
           <ul class="fr-footer__bottom-list">
             <li class="fr-footer__bottom-item">
               <a class="fr-footer__bottom-link" href="https://code.gouv.fr">Retour à code.gouv.fr</a>
@@ -177,9 +137,10 @@
               <a class="fr-footer__bottom-link" href="https://bluehats.global">Le mouvement BlueHats</a>
             </li>
           </ul>
-	</div>
+        </div>
       </div>
     </footer>
+
     <!-- DSFR JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr@1.12.1/dist/dsfr/dsfr.module.min.js" type="module"></script>
     <script src="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr@1.12.1/dist/dsfr/dsfr.nomodule.min.js" nomodule></script>
